@@ -1,19 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Course List</title>
-</head>
-<body>
-    <h2>Course List</h2>
-
-    @if(session('success'))
-        <p>{{ session('success') }}</p>
-    @endif
-
-    <p><a href="/courses/create">Add New Course</a></p>
-
-    <table border="1" cellpadding="6" cellspacing="0">
+<x-layouts.app title="Courses">
+    <h1>Courses</h1>
+    <a href="{{ route('courses.create') }}" class="btn">Create Course</a>
+    <table>
         <thead>
             <tr>
                 <th>ID</th>
@@ -31,13 +19,9 @@
                     <td>{{ $course->title }}</td>
                     <td>{{ $course->credits }}</td>
                     <td>
-                        <a href="/courses/{{ $course->id }}">Detail</a>
-                        <a href="/courses/{{ $course->id }}/edit">Edit</a>
-                        <form action="/courses/{{ $course->id }}" method="POST" style="display:inline;" onsubmit="return confirm('Delete this course?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit">Delete</button>
-                        </form>
+                        <a href="{{ route('courses.show', $course) }}">View</a>
+                        <a href="{{ route('courses.edit', $course) }}">Edit</a>
+                        <x-delete-form :action="route('courses.destroy', $course)" />
                     </td>
                 </tr>
             @empty
@@ -47,5 +31,4 @@
             @endforelse
         </tbody>
     </table>
-</body>
-</html>
+</x-layouts.app>
